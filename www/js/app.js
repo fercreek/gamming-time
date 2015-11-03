@@ -3,18 +3,38 @@
 
   app.controller('GammingCtrl', GammingCtrl);
 
-  GammingCtrl.$inject = ['$http'];
+  GammingCtrl.$inject = ['$http', '$scope'];
 
-  function GammingCtrl($http){
+  function GammingCtrl($http, $scope){
     var vm = this;
-    $http.get('https://www.reddit.com/r/GameOverDigital/.json')
+    vm.posts = [];
+
+    vm.loadMore = loadMore;
+
+    function loadMore(){
+      var params2 = {};
+      if (vm.posts.length > 0) {
+        params2.after = vm.posts[vm.posts.length - 1].name;
+      }
+      $http.get('https://www.reddit.com/r/android/new/.json', {params: params2})
+        .then(function(posts){
+          angular.forEach(posts.data.data.children, function(child){
+            vm.posts.push(child.data);
+          });
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        })
+        .catch(function(data){
+
+        });
+    }
+
+    $http.get('https://www.reddit.com/r/android/new/.json')
       .then(function(posts){
         angular.forEach(posts.data.data.children, function(child){
           vm.posts.push(child.data);
         });
       })
       .catch(function(data){});
-    vm.posts = [];
   }
 
   app.run(function($ionicPlatform) {
