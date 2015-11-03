@@ -10,25 +10,42 @@
     vm.posts = [];
 
     vm.loadMore = loadMore;
+    vm.doRefresh = doRefresh;
+
+    function doRefresh(){
+      if (vm.posts.length > 0) {
+        var params2 = {'before': vm.posts[0].name};
+      } else {
+        return ;
+      }
+      $http.get('https://www.reddit.com/r/gaming/new/.json', {params: params2})
+        .then(function(posts){
+          var newPosts = [];
+          angular.forEach(posts.data.data.children, function(child){
+            newPosts.push(child.data);
+          });
+          vm.posts = newPosts.concat(vm.posts);
+          $scope.$broadcast('scroll.refreshComplete');
+        })
+        .catch(function(data){});
+    }
 
     function loadMore(){
       var params2 = {};
       if (vm.posts.length > 0) {
         params2.after = vm.posts[vm.posts.length - 1].name;
       }
-      $http.get('https://www.reddit.com/r/android/new/.json', {params: params2})
+      $http.get('https://www.reddit.com/r/gaming/new/.json', {params: params2})
         .then(function(posts){
           angular.forEach(posts.data.data.children, function(child){
             vm.posts.push(child.data);
           });
           $scope.$broadcast('scroll.infiniteScrollComplete');
         })
-        .catch(function(data){
-
-        });
+        .catch(function(data){});
     }
 
-    $http.get('https://www.reddit.com/r/android/new/.json')
+    $http.get('https://www.reddit.com/r/gaming/new/.json')
       .then(function(posts){
         angular.forEach(posts.data.data.children, function(child){
           vm.posts.push(child.data);
