@@ -7,7 +7,7 @@
 
   function GammingCtrl($http){
     var vm = this;
-    $http.get('https://www.reddit.com/r/Gamming/.json')
+    $http.get('https://www.reddit.com/r/GameOverDigital/.json')
       .then(function(posts){
         angular.forEach(posts.data.data.children, function(child){
           vm.posts.push(child.data);
