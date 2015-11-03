@@ -35,9 +35,9 @@
             on-refresh="vm.doRefresh()">
         </ion-refresher>
         <div class="list">
-          <a class="item item-thumbnail-left" ng-repeat="post in vm.posts" href="{{posts.url}}">
+          <a class="item item-thumbnail-left" ng-repeat="post in vm.posts" ng-click="vm.openLink(post.url)">
             <img ng-src="{{ post.thumbnail }}" ng-if="post.thumbnail.indexOf('http') === 0"/>
-            <h2 class="post-title" target="_blank">{{post.title}}</h2>
+            <h2 class="post-title">{{post.title}}</h2>
             <p>
               <span am-time-ago="post.created_utc" am-preprocess="unix">
               - {{post.domain}}

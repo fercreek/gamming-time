@@ -11,6 +11,11 @@
 
     vm.loadMore = loadMore;
     vm.doRefresh = doRefresh;
+    vm.openLink = openLink;
+
+    function openLink(url){
+      window.open(url, '_blank');
+    }
 
     function doRefresh(){
       if (vm.posts.length > 0) {
@@ -60,6 +65,9 @@
       // for form inputs)
       if(window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
+      if(window.cordova && window.cordova.InAppBrowser){
+        window.open = window.cordova.InAppBrowser.open;
       }
       if(window.StatusBar) {
         StatusBar.styleDefault();
