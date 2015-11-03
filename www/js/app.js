@@ -3,15 +3,18 @@
 
   app.controller('GammingCtrl', GammingCtrl);
 
-  GammingCtrl.$inject = [];
+  GammingCtrl.$inject = ['$http'];
 
-  function GammingCtrl(){
+  function GammingCtrl($http){
     var vm = this;
-    vm.posts = [
-      {title: 'Primer post'},
-      {title: 'Segundo post'}
-    ];
-    console.log(123);
+    $http.get('https://www.reddit.com/r/Gamming/.json')
+      .then(function(posts){
+        angular.forEach(posts.data.data.children, function(child){
+          vm.posts.push(child.data);
+        });
+      })
+      .catch(function(data){});
+    vm.posts = [];
   }
 
   app.run(function($ionicPlatform) {

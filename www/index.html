@@ -29,7 +29,7 @@
       </ion-header-bar>
       <ion-content>
         <div ng-repeat="post in vm.posts">
-          {{post.title}}
+          <a href="{{posts.url}}" target="_blank">{{post.title}}</a> - {{post.domain}}
         </div>
       </ion-content>
     </ion-pane>
